@@ -1,4 +1,6 @@
-
+import DAO.AlunoDAO;
+import model.Aluno;
+import DAO.Conexao;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -208,6 +210,14 @@ public class cadastro_aluno extends javax.swing.JFrame {
             // Estamos adicionando um novo
             Aluno a = new Aluno(txt_Nome.getText(), idade, curso);
             tabela.addRow(a.obterDados()); //colocando os dados na tabela
+            /* OUTRA FORMA DE PEGAR OS DADOS
+            a.setNome(txt_Nome.getText());
+            a.setIdade(idade);
+            a.setCurso(curso);
+            */
+            //colocando os dados no banco
+            AlunoDAO aDAO = new AlunoDAO();
+            aDAO.inserir(a);
         }
 
         // Limpa campos
@@ -245,10 +255,18 @@ public class cadastro_aluno extends javax.swing.JFrame {
             // Curso (radio button)
             String curso = tabela.getValueAt(linhaSelecionada, 2).toString();
             switch (curso) {
-                case "ADS" -> rdo_ADS.setSelected(true);
-                case "Ciência de Dados" -> rdo_CienciaDados.setSelected(true);
-                case "Gestão Comercial" -> rdo_Gcom.setSelected(true);
-                case "Segurança da Informação" -> rdo_SegInfo.setSelected(true);
+                case "ADS":
+                    rdo_ADS.setSelected(true);
+                    break;
+                case "Ciência de Dados":
+                    rdo_CienciaDados.setSelected(true);
+                    break;
+                case "Gestão Comercial":
+                    rdo_Gcom.setSelected(true);
+                    break;
+                case "Segurança da Informação":
+                    rdo_SegInfo.setSelected(true);
+                    break;
             }
 
             // Guarda a linha que estamos editando
@@ -278,7 +296,19 @@ public class cadastro_aluno extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
+        Conexao c = new Conexao();
+        c.getConexao();
+        
+        /* TESTANDO A INSERÇÃO
+        Aluno a = new Aluno();
+        a.setNome("Marcos");
+        a.setIdade((int)30);
+        a.setCurso("ADS");
+        AlunoDAO aDAO = new AlunoDAO();
+        aDAO.inserir(a);
+        */
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new cadastro_aluno().setVisible(true));
     }
